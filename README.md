@@ -6,8 +6,8 @@ Extract synchronized images based on odometry data
 ```plain
 └── save_path
        ├── event    <-- event camera image
-       ├── rgb    <-- rgb image
-       └── depth     <-- depth image
+       ├── rgb      <-- rgb image
+       └── depth    <-- depth image
 ```
 
 * Excution
@@ -20,6 +20,6 @@ Launch file available parameters for `extract_sync_images`
 
 |Parameter| Type| Description|
 ----------|-----|--------
-|`init_offset_dist`|*double* |initial offset. Default `3.`.|
-|`interval_dist`|*double*|Save images per interval odometry. Default `5.`.|
-|`save_path`|*String*|saving path. Default `/media/khg/HDD1TB/bagfiles/tram_dataset/`.|
+|`init_offset_dist`|*double* |initial offset (m scale). Default `3.`.|
+|`interval_dist`|*double*|Save images per interval odometry (m scale). Default `5.`.|
+|`save_path`|*String*|Saveing path. Default `/media/khg/HDD1TB/bagfiles/tram_dataset/`.|
