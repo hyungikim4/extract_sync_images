@@ -18,7 +18,7 @@
 #include <math.h>
 
 static double init_offset_dist_;
-static double extract_interval_dist_;
+static double interval_dist_;
 static std::string save_path_;
 
 bool first = true;
@@ -32,11 +32,11 @@ int img_count = 0;
 void SyncCallBack(const sensor_msgs::CompressedImageConstPtr& event_img_msg, const sensor_msgs::CompressedImageConstPtr& rgb_img_msg,
                     const sensor_msgs::ImageConstPtr& depth_img_msg, const nav_msgs::OdometryConstPtr& odom_msg)
 {
-    // ROS_INFO("callback");
+    ROS_INFO("sync callback");
     // first time
     if (first)
     {
-        // ROS_INFO("first");
+        ROS_INFO("first");
         first_x = odom_msg->pose.pose.position.x;
         first_y = odom_msg->pose.pose.position.y;
         first = false;
@@ -50,7 +50,7 @@ void SyncCallBack(const sensor_msgs::CompressedImageConstPtr& event_img_msg, con
     if (init_offset)
     {
         double init_odom = sqrt((cur_x-first_x)*(cur_x-first_x)+(cur_y-first_y)*(cur_y-first_y));
-        // ROS_INFO("init odom %f", init_odom);
+        ROS_INFO("init odom %f", init_odom);
         if (init_odom >= init_offset_dist_)
         {
             prev_x = cur_x;
@@ -62,9 +62,9 @@ void SyncCallBack(const sensor_msgs::CompressedImageConstPtr& event_img_msg, con
 
 
     double odom = sqrt((cur_x-prev_x)*(cur_x-prev_x)+(cur_y-prev_y)*(cur_y-prev_y));
-    // ROS_INFO("odom %f", odom);
+    ROS_INFO("odom %f", odom);
 
-    if (odom < extract_interval_dist_)
+    if (odom < interval_dist_)
         return;
 
     // extract images
@@ -128,7 +128,7 @@ int main(int argc, char **argv)
     ros::NodeHandle priv_nh("~");
 
     priv_nh.param("init_offset_dist", init_offset_dist_, 3.);
-    priv_nh.param("extract_interval_dist", extract_interval_dist_, 5.);
+    priv_nh.param("interval_dist", interval_dist_, 5.);
     priv_nh.param("save_path", save_path_, std::string("/media/khg/HDD1TB/bagfiles/tram_dataset/"));
 
     message_filters::Subscriber<sensor_msgs::CompressedImage> event_image_sync(nh, "/dvs_rendering/compressed", 1);
