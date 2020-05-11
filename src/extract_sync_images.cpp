@@ -17,8 +17,8 @@
 #include <boost/bind.hpp>
 #include <math.h>
 
-static double init_offset_dist_;
-static double interval_dist_;
+static double init_offset_odom_;
+static double interval_odom_;
 static std::string save_path_;
 
 bool first = true;
@@ -51,7 +51,7 @@ void SyncCallBack(const sensor_msgs::CompressedImageConstPtr& event_img_msg, con
     {
         double init_odom = sqrt((cur_x-first_x)*(cur_x-first_x)+(cur_y-first_y)*(cur_y-first_y));
         ROS_INFO("init odom %f", init_odom);
-        if (init_odom >= init_offset_dist_)
+        if (init_odom >= init_offset_odom_)
         {
             prev_x = cur_x;
             prev_y = cur_y;
@@ -64,7 +64,7 @@ void SyncCallBack(const sensor_msgs::CompressedImageConstPtr& event_img_msg, con
     double odom = sqrt((cur_x-prev_x)*(cur_x-prev_x)+(cur_y-prev_y)*(cur_y-prev_y));
     ROS_INFO("odom %f", odom);
 
-    if (odom < interval_dist_)
+    if (odom < interval_odom_)
         return;
 
     // extract images
@@ -127,8 +127,8 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
     ros::NodeHandle priv_nh("~");
 
-    priv_nh.param("init_offset_dist", init_offset_dist_, 3.);
-    priv_nh.param("interval_dist", interval_dist_, 5.);
+    priv_nh.param("init_offset_odom", init_offset_odom_, 3.);
+    priv_nh.param("interval_odom", interval_odom_, 5.);
     priv_nh.param("save_path", save_path_, std::string("/media/khg/HDD1TB/bagfiles/tram_dataset/"));
 
     message_filters::Subscriber<sensor_msgs::CompressedImage> event_image_sync(nh, "/dvs_rendering/compressed", 1);
