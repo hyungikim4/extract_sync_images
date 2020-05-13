@@ -10,7 +10,8 @@ Extract synchronized images based on odometry data
        └── depth    <-- depth image
 ```
 
-* Excution
+* Execution
+
 `roslaunch extract_sync_images extract_sync_images.launch`
 
 
