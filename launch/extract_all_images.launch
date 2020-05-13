@@ -1,0 +1,8 @@
+<launch>
+  <node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:=/camera/color/image_raw raw out:=/camera/color/image_raw" />
+  <node pkg="rosbag" type="play" name="rosbag" required="true" args="/media/khg/HDD1TB/bagfiles/tram_dataset/2020-04-23-15-25-43.bag"/>
+  <node name="extract" pkg="image_view" type="extract_images" respawn="false" required="true" output="screen">
+    <remap from="image" to="/camera/color/image_raw"/>
+    <param name="filename_format" value="/media/khg/HDD1TB/bagfiles/tram_dataset/frame%04i.jpg"/>
+  </node>
+</launch>

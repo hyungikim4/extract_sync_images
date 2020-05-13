@@ -11,7 +11,10 @@ Extract synchronized images based on odometry data
 ```
 
 * Execution
+1. Extract all images
+`roslaunch extract_sync_images extract_all_images.launch`
 
+2. Extract synchronized images based on odometry data
 `roslaunch extract_sync_images extract_sync_images.launch`
 
 
