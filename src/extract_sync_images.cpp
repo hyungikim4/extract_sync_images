@@ -82,7 +82,7 @@ void SyncCallBack(const sensor_msgs::CompressedImageConstPtr& event_img_msg, con
         return;
     }
     cv::Mat event_img = cv_ptr->image;
-    sprintf(buf, (save_path_+"event/%06d.png").c_str(), img_count);
+    sprintf(buf, (save_path_+"event/%06d.jpg").c_str(), img_count);
     cv::imwrite(buf, event_img);
 
     // rgb image
@@ -96,7 +96,7 @@ void SyncCallBack(const sensor_msgs::CompressedImageConstPtr& event_img_msg, con
         return;
     }
     cv::Mat rgb_img = cv_ptr->image;
-    sprintf(buf, (save_path_+"rgb/%06d.png").c_str(), img_count);
+    sprintf(buf, (save_path_+"rgb/%06d.jpg").c_str(), img_count);
     cv::imwrite(buf, rgb_img);
 
     // depth image
@@ -110,10 +110,10 @@ void SyncCallBack(const sensor_msgs::CompressedImageConstPtr& event_img_msg, con
         return;
     }
     cv::Mat depth_img = cv_ptr->image;
-    sprintf(buf, (save_path_+"depth/%06d.png").c_str(), img_count);
+    sprintf(buf, (save_path_+"depth/%06d.jpg").c_str(), img_count);
     cv::imwrite(buf, depth_img);
 
-    ROS_INFO("Save %06d.png", img_count);
+    ROS_INFO("Save %06d.jpg", img_count);
     prev_x = cur_x;
     prev_y = cur_y;
     img_count++;
@@ -131,10 +131,10 @@ int main(int argc, char **argv)
     priv_nh.param("interval_odom", interval_odom_, 5.);
     priv_nh.param("save_path", save_path_, std::string("/media/khg/HDD1TB/bagfiles/tram_dataset/"));
 
-    message_filters::Subscriber<sensor_msgs::CompressedImage> event_image_sync(nh, "/dvs_rendering/compressed", 1);
+    message_filters::Subscriber<sensor_msgs::CompressedImage> event_image_sync(nh, "/prophesee/camera/cd_events_image/compressed", 1);
     message_filters::Subscriber<sensor_msgs::CompressedImage> rgb_image_sync(nh, "/camera/color/image_raw/compressed", 1);
     message_filters::Subscriber<sensor_msgs::Image> depth_image_sync(nh, "/camera/depth/image_rect_raw", 1);
-    message_filters::Subscriber<nav_msgs::Odometry> odom_sync(nh, "/Odometry/wheel", 1);
+    message_filters::Subscriber<nav_msgs::Odometry> odom_sync(nh, "/Odometry/ekf_estimated", 1);
 
     typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::CompressedImage, sensor_msgs::CompressedImage,
                                                             sensor_msgs::Image, nav_msgs::Odometry> MySyncPolicy;

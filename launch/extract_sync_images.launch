@@ -1,5 +1,6 @@
 <launch>
     <!-- <node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:=/camera/color/image_raw raw out:=/camera/color/image_raw" /> -->
+    <node pkg="rosbag" type="play" name="rosbag" required="true" args="/media/khg/HDD1TB/bagfiles/tram_dataset/2020-04-23-15-25-43.bag"/>
     <node name="extract_sync_images" pkg="extract_sync_images" type="extract_sync_images" output="screen">
         <param name="init_offset_odom" value="3."/>  <!-- m scale -->
         <param name="interval_odom" value="5."/>  <!-- m scale -->
